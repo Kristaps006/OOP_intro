@@ -62,7 +62,7 @@ const Person = function (firstName, birthYear) {
 const jonas = new Person('Jonas', 1986);
 console.log(jonas);
 
-// Steops behind
+// Steps behind
 //1.New{} object  is created
 //2. function is called, 'this' points to object
 //3. Objects linked to prototype
@@ -307,8 +307,8 @@ converts it to km/h before storing the value, by multiplying the input by 1.6)
 methods, and with the getter and setter.
 Test data:
 § Data car 1: 'Ford' going at 120 km/h */
-
-/* const Car = function (make, speed) {
+/* 
+ const Car = function (make, speed) {
   this.make = make;
   this.speed = speed;
 }; */
@@ -345,14 +345,60 @@ ford.accelerate();
 ford.break();
 ford.SpeedUS = 75;
  */
-//
+/* const Car = function (make, speed) {
+  this.make = make;
+  this.speed = speed;
+}; */
 
+/* Car.prototype.accelerate = function () {
+  this.speed += 10;
+  console.log(`${this.make} goin at ${this.speed} km/h`);
+};
+
+Car.prototype.break = function () {
+  this.speed -= 5;
+  console.log(`${this.make} goin at ${this.speed} km/h`);
+}; */
+/* 
+class EV extends Car {
+  constructor(speed, make, charge) {
+    super(speed, make);
+    this.charge = charge;
+  }
+  accelerate = function () {
+    this.speed += 20;
+    this.charge -= 1;
+    console.log(
+      `${this.make} goin at ${this.speed} km/h and battert is chargered at ${this.charge}%`
+    );
+  };
+
+  chargeTo = function (chargeTo) {
+    this.charge = chargeTo;
+  };
+}
+
+const tesla = new EV('Tesla', 120, 23);
+console.log(tesla);
+tesla.accelerate();
+tesla.chargeTo(180);
+console.log(tesla);
+console.log(ford); */
+
+/* const EVs = function (make, speed, charge) {
+  Car.call(this, make, speed);
+  this.charge = charge;
+};
+
+const tesla = new EVs('Tesla', 120, 90);
+console.log(tesla);
+ */
 //
 //
 //
 ///////////////////////////////
 //-------------------------------- CLASS INHERITANCE-----
-
+/* 
 const Person = function (firstName, birthYear) {
   // Instance properties
   this.firstName = firstName;
@@ -473,3 +519,91 @@ const acc1 = new Account('Kris', 'EUR', 1234);
 acc1.deposit(250);
 acc1.withdraw(140);
 console.log(acc1);
+ */
+
+//---------------------------- ENCAPSULATION_ Protected properties and Methods ----------------------------
+// fields are also called properties
+// Public fields
+//Private Fields
+//Public methods
+//Private methods
+// there is alsia static movement.
+
+class Account {
+  //1.Public field ( instances)
+  // locale = navigator.language;
+  // _movements = [];
+
+  // 2.Private fields also not supported by browser
+
+  /*   #movements = [];
+  #pin; */
+  constructor(owner, currency, pin) {
+    this.owner = owner;
+    this.currency = currency;
+    this.movements = [];
+
+    //prtected but not truly private
+    this.pin = pin; // because we have this in breckets above we need to do it differenlty for Private Field
+    // this._movements = []; //adding underscore turns property to convention
+    this.locale = navigator.language;
+
+    console.log(`thanks for opening account, ${owner}`);
+  }
+
+  // 3) Public methods below , ingore hashtags
+  //Public interface methods
+
+  deposit(val) {
+    this.movements.push(val);
+    return this; // Return this, makes method chainable
+  }
+
+  // People can access but cant overwrite
+  getMovements() {
+    return this.movements;
+  }
+  withdraw(val) {
+    this.deposit(-val);
+    return this;
+  }
+
+  approveLoan(val) {
+    // this is a way to also make method to be used private
+    // random code here
+  }
+  // Private methods are not supported by browsers
+  /*   #withdraw(val) {
+    this.deposit(-val);
+  } */
+
+  static helperFunction() {
+    // this is a helper function that is only available in instance not children
+    return this.deposit;
+  }
+}
+
+const acc1 = new Account('Kris', 'EUR', 1234);
+
+acc1.deposit(250);
+acc1.withdraw(140);
+console.log(acc1);
+acc1.movements.push(250);
+console.log(acc1.getMovements());
+
+// Classes dont support Encapsulation
+//
+//
+//
+//
+//_____________________ CHAINING METHODS _____________________
+
+// Chaining methods
+// Need to add   -return this to method to make chaining work
+
+acc1.deposit(300).deposit(150).withdraw(150);
+
+//
+//
+//
+//
